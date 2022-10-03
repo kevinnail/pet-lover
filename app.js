@@ -2,6 +2,7 @@
 // this will check if we have a user and set signout link if it exists
 import './auth/user.js';
 // > Part C: import fetch to get pets
+import { getPets } from './fetch-utils.js';
 import { renderPet } from './render-utils.js';
 
 /* Get DOM Elements */
