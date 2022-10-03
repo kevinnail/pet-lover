@@ -62,7 +62,6 @@ petForm.addEventListener('submit', async (e) => {
 function displayError() {
     if (error) {
         // eslint-disable-next-line no-console
-        console.log(error);
         errorDisplay.textContent = error.message;
     } else {
         errorDisplay.textContent = '';
