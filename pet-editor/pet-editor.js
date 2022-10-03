@@ -2,15 +2,15 @@
 // this will check if we have a user and set signout link if it exists
 import '../auth/user.js';
 // > : import upload image
-import { uploadImage } from '../fetch-utils.js';
 // > Part B: import fetch to create a pet
+import { uploadImage, createPet } from '../fetch-utils.js';
 
 /* Get DOM Elements */
 const petForm = document.getElementById('pet-form');
 const errorDisplay = document.getElementById('error-display');
 const imageInput = document.getElementById('image-input');
 const preview = document.getElementById('preview');
-
+const addButton = document.getElementById('add-button');
 /* State */
 let error = null;
 
@@ -26,6 +26,7 @@ imageInput.addEventListener('change', () => {
 
 petForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    addButton.disabled = true;
 
     const formData = new FormData(petForm);
 
@@ -37,12 +38,23 @@ petForm.addEventListener('submit', async (e) => {
     const url = await uploadImage('images', imagePath, imageFile);
     const pet = {
         // > Part B: add the name, bio, and image_url fields to the pet object
+        name: formData.get('name'),
+        bio: formData.get('bio'),
+        image_url: url,
     };
 
     // > Part B:
     //    - call function to create the pet in the database
     //    - store the error and pets state from the response
     //    - either display the error or redirect the user to the home page
+    const response = await createPet(pet);
+    error = response.error;
+    addButton.disabled = false;
+    if (error) {
+        displayError();
+    } else {
+        console.log('redirect ' + response);
+    }
 });
 
 /* Display Functions */
