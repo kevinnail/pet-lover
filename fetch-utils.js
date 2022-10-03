@@ -32,10 +32,24 @@ export async function signOutUser() {
 // > Part B: Export async function that
 //      - inserts (creates) a supplied pet argument into supabase
 //      - returns a single data object (not an array)
+export async function createPet(pet) {
+    return await client.from('pets').insert(pet).single();
+}
 
 // > Part C: Export async function that
 //      - gets all pets from supabase
 //      - order the list by created date
+export async function getPets(name) {
+    let query = client
+        .from('pets')
+        .select('*')
+        .limit(200)
+        .order('created_at', { ascending: false });
+    if (name) {
+        query.ilike('name', `%${name}%`);
+    }
+    return query;
+}
 
 /* Storage Functions */
 
@@ -53,7 +67,6 @@ export async function uploadImage(bucketName, imagePath, imageFile) {
 
     if (response.error) {
         // eslint-disable-next-line no-console
-        console.log(response.error);
         return null;
     }
 
