@@ -39,9 +39,14 @@ export async function createPet(pet) {
 // > Part C: Export async function that
 //      - gets all pets from supabase
 //      - order the list by created date
-export async function getPets() {
-    // let query = client.from('pets').select('*').limit(200).order('created_at', ascending: true);
+export async function getPets(name) {
+    let query = client.from('pets').select('*').limit(200).order('created_at', { ascending: true });
+    if (name) {
+        query.ilike('name', `%${name}%`);
+    }
+    return query;
 }
+
 /* Storage Functions */
 
 export async function uploadImage(bucketName, imagePath, imageFile) {
